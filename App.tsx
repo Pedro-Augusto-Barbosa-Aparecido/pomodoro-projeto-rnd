@@ -4,8 +4,8 @@ import { THEME } from './src/styles/theme';
 
 import { useFonts, Roboto_700Bold, Roboto_400Regular } from "@expo-google-fonts/roboto";
 import { Loader } from './src/components/Spinner';
-import { Home } from './src/screens/Home';
 import { Routes } from './src/screens/Routes';
+import { CounterContextProvider } from './src/context/counterContext';
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
@@ -17,7 +17,9 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      { fontsLoaded ? <Routes /> : <Loader /> }
+      <CounterContextProvider>
+        { fontsLoaded ? <Routes /> : <Loader /> }
+      </CounterContextProvider>
     </NativeBaseProvider>
   );
 }
