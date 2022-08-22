@@ -7,6 +7,7 @@ import { Home } from './Home';
 const TabNavigator = createMaterialBottomTabNavigator();
 
 import { THEME } from '../styles/theme';
+import { Scroll } from 'phosphor-react-native';
 
 export function Routes() {
   const { colors } = THEME;
@@ -24,8 +25,9 @@ export function Routes() {
           name="Home" 
           component={Home}
           options={{
+            tabBarLabel: "Countdown",
             tabBarIcon: (color) => {
-              return <MaterialCommunityIcons name='home' color={color.color} size={20} />
+              return <Scroll color={color.color} size={24} />
             },
           }}
         />
