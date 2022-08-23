@@ -36,8 +36,6 @@ export const CounterContextProvider = ({ children }: CounterContextProps) => {
     setHasActiveCycle(state => !state);
   }
 
-  console.log(currentCycle)
-
   const addCurrentCycle = (cycle: { projectName: string, time: number }) => {
     const cycleId = (new Date()).getTime();
     setCurrentCycle({
