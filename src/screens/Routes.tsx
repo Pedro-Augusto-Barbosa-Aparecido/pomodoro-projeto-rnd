@@ -7,7 +7,8 @@ import { Home } from './Home';
 const TabNavigator = createMaterialBottomTabNavigator();
 
 import { THEME } from '../styles/theme';
-import { Scroll } from 'phosphor-react-native';
+import { ArticleNyTimes, Scroll } from 'phosphor-react-native';
+import { CyclesList } from './CyclesList';
 
 export function Routes() {
   const { colors } = THEME;
@@ -28,6 +29,16 @@ export function Routes() {
             tabBarLabel: "Countdown",
             tabBarIcon: (color) => {
               return <Scroll color={color.color} size={24} />
+            },
+          }}
+        />
+        <TabNavigator.Screen 
+          name="CyclesList" 
+          component={CyclesList}
+          options={{
+            tabBarLabel: "Cycles",
+            tabBarIcon: (color) => {
+              return <ArticleNyTimes color={color.color} size={24} />
             },
           }}
         />
