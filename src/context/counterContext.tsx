@@ -64,7 +64,7 @@ export const CounterContextProvider = ({ children }: CounterContextProps) => {
   }
 
   const setSecondsPassed = (seconds: number) => setAmountSecondsPassed(seconds);
-  const clearCurrentCycle = () => setCurrentCycle(null);
+  const clearCurrentCycle = () => setCurrentCycle(state => null);
 
   return (
     <CounterContext.Provider value={{

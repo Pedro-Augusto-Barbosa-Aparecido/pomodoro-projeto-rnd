@@ -8,8 +8,10 @@ export function Input ({ ...rest }: IInput) {
   return (
     <NativeBaseInput 
       bg="gray.600"
-      borderWidth={0}
+      borderWidth={2}
+      borderColor="gray.600"
       h={16}  
+      shadow="4"
       fontSize="md"
       fontFamily={"body"}
       placeholderTextColor="gray.500"

@@ -6,7 +6,7 @@ import { Button } from "../../components/Button";
 
 import { THEME } from "../../styles/theme";
 
-import { Activity, HandPalm, Timer } from "phosphor-react-native";
+import { Activity, HandPalm, Pause, Play, Timer } from "phosphor-react-native";
 import { CounterContext } from "../../context/counterContext";
 
 import { Alert } from "react-native";
@@ -25,8 +25,11 @@ export function Home () {
   } = useContext(CounterContext);
 
   const [showStartButton, setShowStartButton] = useState<boolean>(true);
+  // const [isPaused, setIsPaused] = useState<boolean>(false);
   const [projectName, setProjectName] = useState<string>("");
   const [timeProject, setTimeProject] = useState<number>(0);
+  // const [timeWhenIsPaused, setTimeWhenIsPaused] = useState<number>(0);
+  // const [whenPaused, setWhenPaused] = useState<Date>(new Date());
 
   const totalSeconds = currentCycle ? currentCycle.time * 60 : 0;
   const currentSeconds = currentCycle ? totalSeconds - amountSecondsPassed : 0;
@@ -38,14 +41,41 @@ export function Home () {
   const seconds = String(secondsAmount).padStart(2, '0');
 
   const handleStartCountdown = () => {
+    if (projectName.trim() === "") {
+      Alert.alert("Warning", "Project Name is empty!!\nFill this field.");
+      return;
+    }
+
+    setShowStartButton(false);
     clearCurrentCycle();
-    addCurrentCycle({ projectName, time: 1 });
+    addCurrentCycle({ projectName, time: timeProject });
 
   }
 
-  useEffect(() => {
-    let interval: any;
+  const handleInterruptCycle = () => {
+    setShowStartButton(true);
+    clearCurrentCycle();
 
+  }
+
+  // const handlePauseCycle = () => {
+  //   setIsPaused(state => {
+  //     if (state) {
+  //       setTimeWhenIsPaused(differenceInSeconds(
+  //         new Date(),
+  //         whenPaused
+  //       ));
+  //     } else {
+  //       setWhenPaused(new Date());
+
+  //     }
+
+  //     return !state;
+  //   });
+  // }
+
+  useEffect(() => {
+    var interval: any;
     if (currentCycle) {
       interval = setInterval(() => {
         const secondsDifference = differenceInSeconds(
@@ -54,22 +84,27 @@ export function Home () {
         )
 
         if (secondsDifference >= totalSeconds) {
-          Alert.alert("Teste", "Finish")
+          Alert.alert("Teste", "Finish");
+          setShowStartButton(true);
           makeCycleAsFinishedOrCanceled(currentCycle.id, "finish");
           setSecondsPassed(totalSeconds);
           clearCurrentCycle();
-          clearInterval(interval)
-        } else setSecondsPassed(secondsDifference)
+          clearInterval(interval);
+        } else {
+          setSecondsPassed(secondsDifference);
+          console.log(secondsDifference);
+        }
       }, 1000);
       
     }
-
+    
     return () => {
       clearInterval(interval);
     }
   }, [
     currentCycle,
     setSecondsPassed,
+    // isPaused
   ]);
 
   return (
@@ -84,7 +119,7 @@ export function Home () {
         mb={8}
         color="gray.500"
       >
-        Timer
+        Timer { currentCycle ? `- ${currentCycle.projectName}` : "" }
       </Heading>
       <VStack        
         flex={1}
@@ -129,25 +164,65 @@ export function Home () {
           >
             Começar
           </Button> : 
-          <Button
-            onPress={() => setShowStartButton(true)}
-            bg="red.500"
+          <VStack
+            flex={1}
+            w={"full"}
           >
-            <HStack
-              alignItems={"center"}
+            <Button
+              _pressed={{
+                bg: "red.400"
+              }}
+              onPress={handleInterruptCycle}
+              bg="red.500"
             >
-              <HandPalm size={20} color={colors.white} /> 
-              <Text
-                ml={2}
-                fontSize="md"
-                fontFamily="body"
-                fontWeight="bold"
-                color={"white"}
+              <HStack
+                alignItems={"center"}
               >
-                Interromper
-              </Text>
-            </HStack>
-          </Button>
+                <HandPalm size={20} color={colors.white} /> 
+                <Text
+                  ml={2}
+                  fontSize="md"
+                  fontFamily="body"
+                  fontWeight="bold"
+                  color={"white"}
+                >
+                  Interromper
+                </Text>
+              </HStack>
+            </Button>
+            {/* <Button
+              _pressed={{
+                bg: "gray.400"
+              }}
+              bg={"gray.500"}
+              onPress={handlePauseCycle}
+            >
+              <HStack
+                alignItems={"center"}
+              >
+                {
+                  isPaused ? 
+                  <Play 
+                    size={20}
+                    color={colors.white}
+                  /> :
+                  <Pause 
+                    size={20}
+                    color={colors.white}
+                  />
+                }
+                <Text
+                  ml={2}
+                  fontSize="md"
+                  fontFamily="body"
+                  fontWeight="bold"
+                  color={"white"}
+                >
+                  {isPaused ? "Resume" : "Pause"}
+                </Text>
+              </HStack>
+            </Button> */}
+          </VStack>
         }
       </VStack>
     </Box>
