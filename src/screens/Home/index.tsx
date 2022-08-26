@@ -80,7 +80,7 @@ export function Home () {
       interval = setInterval(() => {
         const secondsDifference = differenceInSeconds(
           new Date(),
-          new Date(currentCycle.startDate),
+          new Date(currentCycle.createdAt),
         )
 
         if (secondsDifference >= totalSeconds) {

@@ -12,6 +12,7 @@ type CounterContextData = {
   currentCycle: Cycle | null;
   hasActiveCycle: boolean;
   amountSecondsPassed: number;
+  cycles: Cycle[];
   changeActiveStatus: () => void;
   setSecondsPassed: (seconds: number) => void;
   addCurrentCycle: (cycle: { projectName: string, time: number }) => void;
@@ -75,7 +76,8 @@ export const CounterContextProvider = ({ children }: CounterContextProps) => {
       setSecondsPassed, 
       addCurrentCycle,
       clearCurrentCycle,
-      makeCycleAsFinishedOrCanceled
+      makeCycleAsFinishedOrCanceled,
+      cycles
     }}>
       { children }
     </CounterContext.Provider>
